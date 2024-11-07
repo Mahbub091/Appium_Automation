@@ -1,6 +1,5 @@
 package android.TestCases;
 
-import BaseConfig.ConfigReader;
 import BaseConfig.SettingAndroidEnv;
 import Utility.TestUtils;
 import android.PageObject.APIDemosPage;
@@ -10,12 +9,10 @@ import org.testng.annotations.Test;
 public class APIDemoTaskTest extends SettingAndroidEnv {
     APIDemosPage APIDemosPage;
     TestUtils test;
-    ConfigReader configReader;
     @BeforeClass
     public void setUp() {
         APIDemosPage = new APIDemosPage(driver);
         test = new TestUtils(driver);
-        configReader= new ConfigReader();
     }
 
     @Test(testName = "PerformLongPress", description = "Verifying User Long Press Menu Popup")
