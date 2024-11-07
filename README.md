@@ -1,26 +1,29 @@
-This Repo Contains Code for Programming Hero SQA Test. 
+This Repo Contains Code for the Programming Hero SQA Test. 
 
 
-○ Automation Strategy: This test is performed on End to End testing method where the internal code quality and complexity is not determined. 
-○ Screenshots: Log4j logging is implemented and stored after every run inside ./reports folder to find any kind of issue that we face during test execution.
-○ Expected Output: The TestSuite tests has several assertion and validation available which makes sure that the tests has proper assertions. The end of test suite should 
+○ Automation Strategy: This test is performed on an end-to-end testing method where the internal code quality and complexity is not determined. 
+
+○ Screenshots: Log4j logging is implemented and stored after every run inside the ./reports folder to identify any issues we face during test execution.
+
+○ Expected Output: The TestSuite tests have several assertions and validation available, ensuring that the tests have proper assertions. The end of the test suite should 
 
 
 ○ Setup Instructions:
 
 How to Run:
 1. Clone the repo
-2. Open the clone repo on a Java Enabled IDE.
+2. Open the clone repo on a Java-enabled IDE.
 3. Open your IDE Terminal.
 4. Run the below steps for successful test Execution:
 
    
-        4.1: Pre-requirement: Below fields need to be available on user work device.
+        4.1: Pre-requirement: The below fields need to be available on user's work device.
             4.1.1: Java
             4.1.2: Maven
             4.1.3: Allure Reporting
-            4.1.4: Android Studio
-            4.1.5: Device (Pixel 4 with API 34)
+            4.1.4: Android Studio (For Emulator)
+            4.1.5: Emulator Device (Pixel 4 with API 34)
+            4.1.6: We have to make sure that both work directory ./app and device have an APK file. I've included the app inside the app directory as default for easy setup.
             
 
         4.2: How to Run The TestSuite: (Test Execution through TestNG)
