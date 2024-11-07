@@ -1,10 +1,16 @@
 package Utility;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidTouchAction;
+import io.appium.java_client.touch.LongPressOptions;
+import io.appium.java_client.touch.offset.ElementOption;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -21,6 +27,7 @@ import org.testng.Assert;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
+import org.openqa.selenium.Point;
 
 public class TestUtils {
 
@@ -76,7 +83,8 @@ public class TestUtils {
     @Step("User clicks on Back Button")
     public void pressBack() {
         try {
-            driver.pressKey(new KeyEvent().withKey(AndroidKey.BACK));
+            driver.navigate().back();
+
         } catch (Exception e) {
             System.out.println("Back Button Not Pressed: " + e.getMessage());
         }
@@ -144,8 +152,8 @@ public class TestUtils {
         }
     }
 
-    @Step("Swiping Hero Animation ::::::::->")
-    public void heroAnimationSwipe() {
+    @Step("Swiping Screen ::::::::->")
+    public void swipingScreenToLeft() {
         WebElement element = driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView[index=0]"));
         try{
             ((JavascriptExecutor) driver).executeScript("mobile: swipeGesture", ImmutableMap.of(
@@ -161,14 +169,14 @@ public class TestUtils {
     @Step("scrolling to section with ::::::::-> {text}")
     public void scrollToSectionWithText(String text) {
         try {
-            driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().text(\"" +text+"\"))")).click();
+            driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().text(\"" +text+"\"))"));
         } catch (Exception e) {
             System.out.println("Found Issue on DailyMovers: " + e.getMessage());
         }
     }
 
     @Step("scroll and Clicking On ::::::::-> {text}")
-    public void clickOnLogOut(String text) {
+    public void clickAfterScroll(String text) {
         try {
             driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().text(\""+text+"\"))")).click();
         } catch (Exception e) {
@@ -203,7 +211,57 @@ public class TestUtils {
         }
     }
 
+    @Step("Validating Screen to have ::::::::->{expectedTitle}")
+    public boolean validatingTitle(String expectedTitle) {
+        String actualTitle = driver.getTitle();
+        return actualTitle.equals(expectedTitle);
+    }
+
+    @Step("Long Tapping on ::::::::-> {WebElement}")
+    public void longPressOnElement(WebElement webElement) {
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence longPress = new Sequence(finger, 1);
+
+        longPress.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), webElement.getLocation().getX(), webElement.getLocation().getY()));
+        longPress.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        longPress.addAction(new Pause(finger, Duration.ofSeconds(2)));
+
+        longPress.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(Collections.singletonList(longPress));
+    }
+
+    @Step("Perform Dragging from ::::::::-> {Source} to ::::::::-> {Target} Element")
+    public void dragAndDrop(WebElement source, WebElement target) {
+        Point sourcePoint = source.getLocation();
+        int startX = sourcePoint.getX();
+        int startY = sourcePoint.getY();
+
+        Point targetPoint = target.getLocation();
+        int endX = targetPoint.getX();
+        int endY = targetPoint.getY();
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+
+        Sequence dragAndDrop = new Sequence(finger, 1);
+        dragAndDrop.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY));
+        dragAndDrop.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        dragAndDrop.addAction(new Pause(finger, Duration.ofMillis(500)));
+        dragAndDrop.addAction(finger.createPointerMove(Duration.ofMillis(1000), PointerInput.Origin.viewport(), endX, endY));
+        dragAndDrop.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(Arrays.asList(dragAndDrop));
+    }
+
+
+
+
+
+
 
 
 
 }
+
+
